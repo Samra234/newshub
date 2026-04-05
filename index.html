@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsHub Pakistan | Premium Text-Only Portal</title>
+    
+    <!-- Google AdSense Code Placeholder -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/..."></script> -->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0f172a; --secondary: #2563eb; --accent: #f59e0b;
+            --danger: #dc2626; --success: #10b981; --dark: #020617;
+            --light: #ffffff; --text-main: #1e293b; --text-muted: #475569;
+            --card-bg: #ffffff; --border-color: #e2e8f0;
+        }
+
+        body.dark {
+            --primary: #60a5fa; --secondary: #3b82f6; --dark: #020617;
+            --light: #0f172a; --text-main: #f1f5f9; --text-muted: #94a3b8;
+            --card-bg: #1e293b; --border-color: #334155;
+            background: var(--dark); color: var(--text-main);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; background: #f8fafc; color: var(--text-main); transition: 0.3s; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Header */
+        header { background: var(--card-bg); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); }
+        .top-bar { background: var(--primary); color: white; text-align: center; padding: 0.4rem 0; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; }
+        .header-main { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--primary); text-decoration: none; border-bottom: 4px solid var(--secondary); }
+        
+        .nav-menu { display: flex; list-style: none; gap: 1.5rem; }
+        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.3s; }
+        .nav-link.active { color: var(--secondary); }
+
+        .dark-toggle { background: none; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 50%; cursor: pointer; }
+
+        /* Hero */
+        .hero { background: var(--primary); color: white; padding: 3rem 0; text-align: center; margin-bottom: 2rem; }
+        .hero-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .hero p { opacity: 0.8; font-size: 1.1rem; }
+
+        /* Minimalist News Grid */
+        .news-section { padding: 1rem 0; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        
+        .news-card { 
+            background: var(--card-bg); 
+            border-radius: 8px; 
+            padding: 1.8rem; 
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--secondary); /* Category accent bar */
+            cursor: pointer; 
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
+        }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); background: #fafafa; }
+        body.dark .news-card:hover { background: #2d3748; }
+
+        .news-title { font-size: 1.3rem; font-weight: 800; line-height: 1.3; margin-bottom: 1rem; color: var(--text-main); }
+        .news-excerpt { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-meta { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-top: 1px solid var(--border-color); padding-top: 15px; }
+
+        /* 3-Column Newspaper Section */
+        .special-section { padding: 4rem 0; background: var(--light); border-top: 2px solid var(--primary); }
+        .tri-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .col-header { font-size: 1.2rem; font-weight: 900; color: var(--primary); border-bottom: 4px solid var(--primary); padding-bottom: 8px; margin-bottom: 25px; text-transform: uppercase; }
+        
+        .long-news-card { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; }
+        .long-news-card:last-child { border: none; }
+        .long-news-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; line-height: 1.4; color: var(--text-main); }
+        .long-news-excerpt { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); overflow-y: auto; }
+        .modal-content { background: var(--card-bg); margin: 4rem auto; border-radius: 12px; width: 90%; max-width: 750px; position: relative; animation: fadeIn 0.3s ease; border: 1px solid var(--border-color); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 2rem; color: var(--text-muted); cursor: pointer; }
+
+        /* Ad Containers */
+        .ad-box { width: 100%; text-align: center; margin: 2rem 0; padding: 1rem; border: 1px dashed #cbd5e1; color: #94a3b8; font-size: 0.8rem; }
+
+        footer { background: var(--primary); color: #94a3b8; padding: 3rem 0; text-align: center; border-top: 5px solid var(--secondary); }
+        .footer-logo { font-size: 1.5rem; font-weight: 900; color: white; display: block; margin-bottom: 10px; }
+
+        @media (max-width: 992px) { .tri-grid { grid-template-columns: 1fr; } .nav-menu { display: none; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="top-bar">PAKISTAN'S FASTEST AUTOMATED NEWS PORTAL</div>
+        <div class="container header-main">
+            <a href="#" class="logo" onclick="filterNews('all')">NewsHub</a>
+            <ul class="nav-menu">
+                <li><a class="nav-link active" onclick="filterNews('all')">LATEST</a></li>
+                <li><a class="nav-link" onclick="filterNews('pakistan')">PAKISTAN</a></li>
+                <li><a class="nav-link" onclick="filterNews('world')">WORLD</a></li>
+                <li><a class="nav-link" onclick="filterNews('business')">BUSINESS</a></li>
+                <li><a class="nav-link" onclick="filterNews('sports')">SPORTS</a></li>
+            </ul>
+            <button class="dark-toggle" onclick="toggleDarkMode()"><i class="fas fa-adjust"></i></button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Live News Feed</h1>
+            <p>Summarized headlines from Dawn and The Express Tribune.</p>
+        </div>
+    </section>
+
+    <!-- AdSense Top -->
+    <div class="container ad-box">
+        <p>ADVERTISEMENT (TOP BANNER)</p>
+    </div>
+
+    <main class="news-section container">
+        <h2 id="catTitle" style="margin-bottom: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Top Headlines</h2>
+        <div class="news-grid" id="newsGrid">
+            <p style="grid-column: 1/-1; text-align: center; padding: 3rem;">Updating live data...</p>
+        </div>
+    </main>
+
+    <section class="special-section">
+        <div class="container tri-grid">
+            <div>
+                <h2 class="col-header">National News</h2>
+                <div id="col-pakistan"></div>
+            </div>
+            <div>
+                <h2 class="col-header">International</h2>
+                <div id="col-world"></div>
+            </div>
+            <div>
+                <h2 class="col-header">Financial & Tech</h2>
+                <div id="col-business"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AdSense Bottom -->
+    <div class="container ad-box">
+        <p>ADVERTISEMENT (IN-FEED)</p>
+    </div>
+
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNewsModal()">&times;</span>
+            <div id="newsModalContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <span class="footer-logo">NEWSHUB</span>
+            <p>&copy; 2024 Automated News Portal. Powered by Dawn & Tribune RSS.</p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * SETTINGS:
+         * 1. Create a FREE account at https://rss2json.com/
+         * 2. Replace 'YOUR_API_KEY_HERE' with your real key.
+         */
+        const RSS_KEY = "uepo1cshitplr0uch5njwd5f9npwwazsx6hb7sfo"; 
+
+        const FEEDS = {
+            pakistan: "https://tribune.com.pk/feed/pakistan",
+            world: "https://www.dawn.com/feeds/world/",
+            business: "https://www.dawn.com/feeds/business/",
+            sports: "https://tribune.com.pk/feed/sports",
+            politics: "https://tribune.com.pk/feed/politics"
+        };
+
+        let newsData = [];
+
+        async function fetchLiveNews() {
+            const results = [];
+            for (const [cat, url] of Object.entries(FEEDS)) {
+                try {
+                    const fetchUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}&api_key=${RSS_KEY}`;
+                    const res = await fetch(fetchUrl);
+                    const data = await res.json();
+
+                    if (data.status === 'ok') {
+                        data.items.forEach((item, i) => {
+                            // Clean text: removes HTML tags like <img> or <br> from the news content
+                            const cleanText = item.description.replace(/<[^>]*>?/gm, '');
+                            
+                            results.push({
+                                id: cat + i + Math.random(),
+                                title: item.title,
+                                category: cat,
+                                excerpt: cleanText.substring(0, 150) + "...",
+                                source: data.feed.title.split(' - ')[0],
+                                time: formatTime(item.pubDate),
+                                fullContent: cleanText
+                            });
+                        });
+                    }
+                } catch (e) { console.error("Error loading " + cat); }
+            }
+            return results;
+        }
+
+        function formatTime(d) {
+            const past = new Date(d);
+            const diff = Math.floor((new Date() - past) / (1000 * 60 * 60));
+            return diff <= 0 ? "Just now" : diff + "h ago";
+        }
+
+        function renderNews(filter = 'all') {
+            const grid = document.getElementById('newsGrid');
+            const title = document.getElementById('catTitle');
+            const filtered = (filter === 'all') ? newsData : newsData.filter(n => n.category === filter);
+            
+            title.textContent = filter === 'all' ? "Top Headlines" : `${filter.toUpperCase()} news`;
+            
+            grid.innerHTML = filtered.slice(0, 12).map(n => `
+                <div class="news-card" onclick="openModal('${n.id}')" style="border-left-color: ${getCategoryColor(n.category)}">
+                    <div>
+                        <div style="font-size:0.7rem; font-weight:900; color:var(--secondary); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">
+                            ${n.category}
+                        </div>
+                        <h3 class="news-title">${n.title}</h3>
+                        <p class="news-excerpt">${n.excerpt}</p>
+                    </div>
+                    <div class="news-meta">
+                        <span>${n.source}</span>
+                        <span>${n.time}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderColumns() {
+            const fillCol = (data, id) => {
+                document.getElementById(id).innerHTML = data.slice(0, 4).map(n => `
+                    <div class="long-news-card" onclick="openModal('${n.id}')">
+                        <h4 class="long-news-title">${n.title}</h4>
+                        <p class="long-news-excerpt">${n.excerpt}</p>
+                        <div style="font-size:0.7rem; font-weight:bold; color:var(--secondary); margin-top:10px;">
+                            ${n.source} • ${n.time}
+                        </div>
+                    </div>
+                `).join('');
+            };
+            fillCol(newsData.filter(n => n.category === 'pakistan'), 'col-pakistan');
+            fillCol(newsData.filter(n => n.category === 'world'), 'col-world');
+            fillCol(newsData.filter(n => n.category === 'business'), 'col-business');
+        }
+
+        function getCategoryColor(cat) {
+            const colors = { pakistan: '#2563eb', world: '#dc2626', business: '#059669', sports: '#f59e0b', politics: '#7c3aed' };
+            return colors[cat] || '#2563eb';
+        }
+
+        function filterNews(cat) {
+            renderNews(cat);
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.remove('active');
+                if(l.textContent.toLowerCase().includes(cat)) l.classList.add('active');
+            });
+            window.scrollTo({ top: 450, behavior: 'smooth' });
+        }
+
+        function openModal(id) {
+            const n = newsData.find(item => item.id == id);
+            if(!n) return;
+            document.getElementById('newsModalContent').innerHTML = `
+                <div style="padding:3rem;">
+                    <span style="font-weight:900; color:var(--secondary); text-transform:uppercase; font-size:0.8rem;">${n.category} | ${n.source}</span>
+                    <h1 style="margin: 1.5rem 0; font-size: 2.2rem; line-height:1.2;">${n.title}</h1>
+                    <div style="font-size:1.2rem; line-height:1.8; color:var(--text-main);">
+                        ${n.fullContent}
+                    </div>
+                    <p style="margin-top:2rem; color:#888; font-size:0.9rem;">Reported: ${n.time}</p>
+                </div>
+            `;
+            document.getElementById('newsModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNewsModal() { document.getElementById('newsModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function toggleDarkMode() { document.body.classList.toggle('dark'); }
+
+        window.onload = async () => {
+            newsData = await fetchLiveNews();
+            if(newsData.length > 0) {
+                renderNews('all');
+                renderColumns();
+            } else {
+                document.getElementById('newsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center;">Empty Feed. Please check API Key.</p>`;
+            }
+        };
+
+        window.onclick = (e) => { if(e.target.className === 'modal') closeNewsModal(); };
+    </script>
+</body>
+</html>
